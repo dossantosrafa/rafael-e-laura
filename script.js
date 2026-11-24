@@ -85,18 +85,31 @@ function renderMonths() {
   }
 }
 
+
 function loadPhotos() {
   document.querySelectorAll('[data-photo]').forEach((frame) => {
     const url = frame.dataset.photo;
     const image = new Image();
-    image.alt = frame.closest('figure')?.querySelector('figcaption span')?.textContent || 'Nossa memória';
-    image.loading = 'lazy';
+
+    image.alt = frame.closest('figure')
+      ?.querySelector('figcaption span')?.textContent
+      || 'Nossa memória';
+
+    image.loading = 'eager';
     image.decoding = 'async';
-    image.onload = () => frame.replaceChildren(image);
-    image.onerror = () => {}; // A ilustração de espaço reservado permanece visível.
+
+    image.onload = () => {
+      frame.replaceChildren(image);
+    };
+
+    image.onerror = () => {
+      console.error('Erro ao carregar foto:', url);
+    };
+
     image.src = url;
   });
 }
+
 
 const modal = $('#letterModal');
 let previousFocus = null;
