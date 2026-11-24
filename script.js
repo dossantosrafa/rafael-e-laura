@@ -86,29 +86,23 @@ function renderMonths() {
 }
 
 
+
 function loadPhotos() {
   document.querySelectorAll('[data-photo]').forEach((frame) => {
-    const url = frame.dataset.photo;
-    const image = new Image();
+    const image = document.createElement('img');
 
-    image.alt = frame.closest('figure')
-      ?.querySelector('figcaption span')?.textContent
-      || 'Nossa memória';
-
+    image.src = frame.dataset.photo;
+    image.alt = 'Foto de Rafael e Laura';
     image.loading = 'eager';
-    image.decoding = 'async';
-
-    image.onload = () => {
-      frame.replaceChildren(image);
-    };
 
     image.onerror = () => {
-      console.error('Erro ao carregar foto:', url);
+      console.error('Imagem não carregou:', image.src);
     };
 
-    image.src = url;
+    frame.replaceChildren(image);
   });
 }
+
 
 
 const modal = $('#letterModal');
